@@ -12,12 +12,12 @@ export default function DashboardHome() {
       </div>
 
       {/* Weather Card */}
-      <div className="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground rounded-2xl p-6 space-y-4">
+      <div className="bg-linear-to-br from-primary to-primary/80 text-primary-foreground rounded-2xl p-6 space-y-4">
         <h2 className="text-lg font-semibold flex items-center gap-2">
           <Cloud className="w-5 h-5" />
           Météo
         </h2>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           <div className="bg-white/10 backdrop-blur rounded-lg p-4 text-center">
             <div className="text-3xl font-bold mb-1">20°C</div>
             <div className="text-sm text-primary-foreground/80">Température</div>
@@ -27,6 +27,13 @@ export default function DashboardHome() {
             <div className="text-sm text-primary-foreground/80 flex items-center justify-center gap-1">
               <Droplets className="w-4 h-4" />
               Humidité
+            </div>
+          </div>
+          <div className="bg-white/10 backdrop-blur rounded-lg p-4 text-center">
+            <div className="text-3xl font-bold mb-1">8</div>
+            <div className="text-sm text-primary-foreground/80 flex items-center justify-center gap-1">
+              <Wind className="w-4 h-4" />
+              Vent
             </div>
           </div>
           <div className="bg-white/10 backdrop-blur rounded-lg p-4 text-center">
