@@ -8,11 +8,36 @@ interface ProfileScreenProps {
 }
 
 export default function ProfileScreen({ onBack }: ProfileScreenProps) {
+
+  // Stocker les informations utilisateur
+        // localStorage.setItem('userId', data.user.id.toString())
+        // localStorage.setItem('userData', JSON.stringify({
+        //   nom: data.user.nom,
+        //   prenom: data.user.prenom,
+        //   email: data.user.email,
+        //   telephone: data.user.telephone,
+        //   typeUtilisateur: data.user.typeUtilisateur,
+        //   sexe: data.user.sexe,
+        //   localisation: data.user.localisation,
+        //   actif: data.user.actif
+        // }))
+        
+        // // Stocker les informations séparément pour un accès facile
+        // localStorage.setItem('userNom', data.user.nom)
+        // localStorage.setItem('userPrenom', data.user.prenom)
+        // localStorage.setItem('userEmail', data.user.email)
+        // localStorage.setItem('userType', data.user.typeUtilisateur)
+
+  const username = localStorage.getItem("userNom") 
+  const userPrenom = localStorage.getItem('userPrenom')
+  const userEmail = localStorage.getItem("userEmail")
+  const userPhone = localStorage.getItem("userPhone")
+  
   const [language, setLanguage] = useState("fr")
   const [profile, setProfile] = useState({
-    name: "Johanne Nziko",
-    email: "johanne@wigrow.com",
-    phone: "+237 6XX XXX XXX",
+    name: username || ''  + userPrenom || '',
+    email: userEmail,
+    phone: userPhone,
     farm: "Farm Kouetche - 3 hectares",
   })
   const [isEditing, setIsEditing] = useState(false)
@@ -65,6 +90,19 @@ export default function ProfileScreen({ onBack }: ProfileScreenProps) {
   }
 
   const handleLogout = () => {
+    // const handleLogout = () => {
+    // Nettoyer le localStorage
+    localStorage.removeItem('authToken')
+    localStorage.removeItem('userId')
+    localStorage.removeItem('userData')
+    localStorage.removeItem('userNom')
+    localStorage.removeItem('userPrenom')
+    localStorage.removeItem('userEmail')
+    localStorage.removeItem('userPhone')
+    
+    // Rediriger vers la page de login
+//     window.location.href = '/login'
+// }
     // Reset to auth screen
     window.location.reload()
   }

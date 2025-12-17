@@ -3633,18 +3633,18 @@ function ProfileScreen({ onBack }) {
         setIsEditing(false);
     };
     const handleLogout = ()=>{
-        const handleLogout = ()=>{
-            // Nettoyer le localStorage
-            localStorage.removeItem('authToken');
-            localStorage.removeItem('userId');
-            localStorage.removeItem('userData');
-            localStorage.removeItem('userNom');
-            localStorage.removeItem('userPrenom');
-            localStorage.removeItem('userEmail');
-            localStorage.removeItem('userPhone');
-            // Rediriger vers la page de login
-            window.location.href = '/login';
-        };
+        // const handleLogout = () => {
+        // Nettoyer le localStorage
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('userData');
+        localStorage.removeItem('userNom');
+        localStorage.removeItem('userPrenom');
+        localStorage.removeItem('userEmail');
+        localStorage.removeItem('userPhone');
+        // Rediriger vers la page de login
+        //     window.location.href = '/login'
+        // }
         // Reset to auth screen
         window.location.reload();
     };
@@ -4473,6 +4473,86 @@ function Dashboard() {
     }, this);
 }
 }),
+"[project]/Desktop/UCAC ICAM/X5/Smart Realisation/front/Wi_Grow-project/hook/useAuth.tsx [app-ssr] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+// hooks/useAuth.ts
+__turbopack_context__.s([
+    "useAuth",
+    ()=>useAuth
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$UCAC__ICAM$2f$X5$2f$Smart__Realisation$2f$front$2f$Wi_Grow$2d$project$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/UCAC ICAM/X5/Smart Realisation/front/Wi_Grow-project/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react.js [app-ssr] (ecmascript)");
+"use client";
+;
+function useAuth() {
+    const [isAuthenticated, setIsAuthenticated] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$UCAC__ICAM$2f$X5$2f$Smart__Realisation$2f$front$2f$Wi_Grow$2d$project$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [userData, setUserData] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$UCAC__ICAM$2f$X5$2f$Smart__Realisation$2f$front$2f$Wi_Grow$2d$project$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
+    const [isLoading, setIsLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$UCAC__ICAM$2f$X5$2f$Smart__Realisation$2f$front$2f$Wi_Grow$2d$project$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(true);
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$UCAC__ICAM$2f$X5$2f$Smart__Realisation$2f$front$2f$Wi_Grow$2d$project$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        checkAuth();
+    }, []);
+    const checkAuth = ()=>{
+        setIsLoading(true);
+        const authToken = localStorage.getItem('authToken');
+        const storedUserData = localStorage.getItem('userData');
+        if (authToken && storedUserData) {
+            try {
+                const parsedUserData = JSON.parse(storedUserData);
+                setIsAuthenticated(true);
+                setUserData(parsedUserData);
+            // Optionnel: Vérifier la validité du token avec le serveur
+            // validateTokenWithServer(authToken)
+            } catch (error) {
+                console.error('Erreur de parsing des données utilisateur:', error);
+                clearAuth();
+            }
+        } else {
+            clearAuth();
+        }
+        setIsLoading(false);
+    };
+    const login = (token, user)=>{
+        localStorage.setItem('authToken', token);
+        localStorage.setItem('userData', JSON.stringify(user));
+        localStorage.setItem('userId', user.id.toString());
+        setIsAuthenticated(true);
+        setUserData(user);
+    };
+    const logout = ()=>{
+        clearAuth();
+        // Rediriger vers la page de login si nécessaire
+        if ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
+        ;
+    };
+    const clearAuth = ()=>{
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('userData');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('userNom');
+        localStorage.removeItem('userPrenom');
+        localStorage.removeItem('userEmail');
+        localStorage.removeItem('userType');
+        setIsAuthenticated(false);
+        setUserData(null);
+    };
+    const getAuthHeaders = ()=>{
+        const token = localStorage.getItem('authToken');
+        return {
+            'Content-Type': 'application/json',
+            'Authorization': token ? `Bearer ${token}` : ''
+        };
+    };
+    return {
+        isAuthenticated,
+        userData,
+        isLoading,
+        login,
+        logout,
+        checkAuth,
+        getAuthHeaders
+    };
+}
+}),
 "[project]/Desktop/UCAC ICAM/X5/Smart Realisation/front/Wi_Grow-project/app/page.tsx [app-ssr] (ecmascript)", ((__turbopack_context__) => {
 "use strict";
 
@@ -4484,8 +4564,9 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$UCAC__ICAM$2f$X5$
 var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$UCAC__ICAM$2f$X5$2f$Smart__Realisation$2f$front$2f$Wi_Grow$2d$project$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/UCAC ICAM/X5/Smart Realisation/front/Wi_Grow-project/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$UCAC__ICAM$2f$X5$2f$Smart__Realisation$2f$front$2f$Wi_Grow$2d$project$2f$components$2f$onboarding$2d$screen$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/UCAC ICAM/X5/Smart Realisation/front/Wi_Grow-project/components/onboarding-screen.tsx [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$UCAC__ICAM$2f$X5$2f$Smart__Realisation$2f$front$2f$Wi_Grow$2d$project$2f$components$2f$login$2d$screen$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/UCAC ICAM/X5/Smart Realisation/front/Wi_Grow-project/components/login-screen.tsx [app-ssr] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$UCAC__ICAM$2f$X5$2f$Smart__Realisation$2f$front$2f$Wi_Grow$2d$project$2f$components$2f$signup$2d$screen$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/UCAC ICAM/X5/Smart Realisation/front/Wi_Grow-project/components/signup-screen.tsx [app-ssr] (ecmascript)"); // Import ajouté
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$UCAC__ICAM$2f$X5$2f$Smart__Realisation$2f$front$2f$Wi_Grow$2d$project$2f$components$2f$signup$2d$screen$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/UCAC ICAM/X5/Smart Realisation/front/Wi_Grow-project/components/signup-screen.tsx [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$UCAC__ICAM$2f$X5$2f$Smart__Realisation$2f$front$2f$Wi_Grow$2d$project$2f$components$2f$dashboard$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/UCAC ICAM/X5/Smart Realisation/front/Wi_Grow-project/components/dashboard.tsx [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$UCAC__ICAM$2f$X5$2f$Smart__Realisation$2f$front$2f$Wi_Grow$2d$project$2f$hook$2f$useAuth$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/UCAC ICAM/X5/Smart Realisation/front/Wi_Grow-project/hook/useAuth.tsx [app-ssr] (ecmascript)");
 "use client";
 ;
 ;
@@ -4493,9 +4574,31 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$UCAC__ICAM$2f$X5$
 ;
 ;
 ;
+;
 function Home() {
+    const { isAuthenticated, isLoading } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$UCAC__ICAM$2f$X5$2f$Smart__Realisation$2f$front$2f$Wi_Grow$2d$project$2f$hook$2f$useAuth$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useAuth"])();
     const [currentScreen, setCurrentScreen] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$UCAC__ICAM$2f$X5$2f$Smart__Realisation$2f$front$2f$Wi_Grow$2d$project$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("onboarding");
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$UCAC__ICAM$2f$X5$2f$Smart__Realisation$2f$front$2f$Wi_Grow$2d$project$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        if (!isLoading) {
+            if (isAuthenticated) {
+                setCurrentScreen("dashboard");
+            } else {
+                // Décider quel écran afficher pour les nouveaux utilisateurs
+                // Vous pouvez ajouter une logique pour décider entre onboarding et login
+                const hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding');
+                if (hasSeenOnboarding === 'true') {
+                    setCurrentScreen("login");
+                } else {
+                    setCurrentScreen("onboarding");
+                }
+            }
+        }
+    }, [
+        isAuthenticated,
+        isLoading
+    ]);
     const handleOnboardingComplete = ()=>{
+        localStorage.setItem('hasSeenOnboarding', 'true');
         setCurrentScreen("login");
     };
     const handleLoginComplete = ()=>{
@@ -4510,6 +4613,39 @@ function Home() {
     const handleSwitchToLogin = ()=>{
         setCurrentScreen("login");
     };
+    if (isLoading) {
+        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$UCAC__ICAM$2f$X5$2f$Smart__Realisation$2f$front$2f$Wi_Grow$2d$project$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            className: "min-h-screen bg-white flex items-center justify-center",
+            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$UCAC__ICAM$2f$X5$2f$Smart__Realisation$2f$front$2f$Wi_Grow$2d$project$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "text-center",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$UCAC__ICAM$2f$X5$2f$Smart__Realisation$2f$front$2f$Wi_Grow$2d$project$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"
+                    }, void 0, false, {
+                        fileName: "[project]/Desktop/UCAC ICAM/X5/Smart Realisation/front/Wi_Grow-project/app/page.tsx",
+                        lineNumber: 57,
+                        columnNumber: 11
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$UCAC__ICAM$2f$X5$2f$Smart__Realisation$2f$front$2f$Wi_Grow$2d$project$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                        className: "mt-4 text-gray-600",
+                        children: "Chargement..."
+                    }, void 0, false, {
+                        fileName: "[project]/Desktop/UCAC ICAM/X5/Smart Realisation/front/Wi_Grow-project/app/page.tsx",
+                        lineNumber: 58,
+                        columnNumber: 11
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/Desktop/UCAC ICAM/X5/Smart Realisation/front/Wi_Grow-project/app/page.tsx",
+                lineNumber: 56,
+                columnNumber: 9
+            }, this)
+        }, void 0, false, {
+            fileName: "[project]/Desktop/UCAC ICAM/X5/Smart Realisation/front/Wi_Grow-project/app/page.tsx",
+            lineNumber: 55,
+            columnNumber: 7
+        }, this);
+    }
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$UCAC__ICAM$2f$X5$2f$Smart__Realisation$2f$front$2f$Wi_Grow$2d$project$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
         className: "min-h-screen bg-background",
         children: [
@@ -4517,7 +4653,7 @@ function Home() {
                 onComplete: handleOnboardingComplete
             }, void 0, false, {
                 fileName: "[project]/Desktop/UCAC ICAM/X5/Smart Realisation/front/Wi_Grow-project/app/page.tsx",
-                lineNumber: 35,
+                lineNumber: 67,
                 columnNumber: 9
             }, this),
             currentScreen === "login" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$UCAC__ICAM$2f$X5$2f$Smart__Realisation$2f$front$2f$Wi_Grow$2d$project$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$UCAC__ICAM$2f$X5$2f$Smart__Realisation$2f$front$2f$Wi_Grow$2d$project$2f$components$2f$login$2d$screen$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -4525,7 +4661,7 @@ function Home() {
                 onSwitchToSignup: handleSwitchToSignup
             }, void 0, false, {
                 fileName: "[project]/Desktop/UCAC ICAM/X5/Smart Realisation/front/Wi_Grow-project/app/page.tsx",
-                lineNumber: 39,
+                lineNumber: 71,
                 columnNumber: 9
             }, this),
             currentScreen === "signup" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$UCAC__ICAM$2f$X5$2f$Smart__Realisation$2f$front$2f$Wi_Grow$2d$project$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$UCAC__ICAM$2f$X5$2f$Smart__Realisation$2f$front$2f$Wi_Grow$2d$project$2f$components$2f$signup$2d$screen$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -4533,22 +4669,22 @@ function Home() {
                 onSwitchToLogin: handleSwitchToLogin
             }, void 0, false, {
                 fileName: "[project]/Desktop/UCAC ICAM/X5/Smart Realisation/front/Wi_Grow-project/app/page.tsx",
-                lineNumber: 46,
+                lineNumber: 78,
                 columnNumber: 9
             }, this),
             currentScreen === "dashboard" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$UCAC__ICAM$2f$X5$2f$Smart__Realisation$2f$front$2f$Wi_Grow$2d$project$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$UCAC__ICAM$2f$X5$2f$Smart__Realisation$2f$front$2f$Wi_Grow$2d$project$2f$components$2f$dashboard$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/Desktop/UCAC ICAM/X5/Smart Realisation/front/Wi_Grow-project/app/page.tsx",
-                lineNumber: 52,
+                lineNumber: 84,
                 columnNumber: 41
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/Desktop/UCAC ICAM/X5/Smart Realisation/front/Wi_Grow-project/app/page.tsx",
-        lineNumber: 33,
+        lineNumber: 65,
         columnNumber: 5
     }, this);
 }
 }),
 ];
 
-//# sourceMappingURL=Desktop_UCAC%20ICAM_X5_Smart%20Realisation_front_Wi_Grow-project_4899e84f._.js.map
+//# sourceMappingURL=Desktop_UCAC%20ICAM_X5_Smart%20Realisation_front_Wi_Grow-project_c08e79e5._.js.map

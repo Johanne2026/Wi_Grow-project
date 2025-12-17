@@ -3,11 +3,12 @@
 import { AlertCircle, Cloud, Droplets, Wind, Zap, Camera } from "lucide-react"
 
 export default function DashboardHome() {
+  const userPrenom = localStorage.getItem('userPrenom')
   return (
     <div className="space-y-6">
       {/* Greeting */}
       <div>
-        <h1 className="text-2xl font-bold text-foreground mb-1">Bonjour Johanne Nziko !</h1>
+        <h1 className="text-2xl font-bold text-foreground mb-1">Bonjour {userPrenom} !</h1>
         <p className="text-muted-foreground">Lundi 24 novembre 2025</p>
       </div>
 

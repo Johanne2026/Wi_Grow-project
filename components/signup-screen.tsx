@@ -46,83 +46,219 @@ export default function SignupScreen({ onComplete, onSwitchToLogin }: SignupScre
 
   const validateStep1 = () => {
     const newErrors: Record<string, string> = {}
-    
+
     if (!formData.nom.trim()) {
       newErrors.nom = "Le nom est requis"
     }
-    
+
     if (!formData.prenom.trim()) {
       newErrors.prenom = "Le prénom est requis"
     }
-    
+
     if (!formData.email.trim()) {
       newErrors.email = "L'email est requis"
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = "Email invalide"
     }
-    
+
     if (!formData.password) {
       newErrors.password = "Le mot de passe est requis"
     } else if (formData.password.length < 6) {
       newErrors.password = "Le mot de passe doit contenir au moins 6 caractères"
     }
-    
+
     if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = "Les mots de passe ne correspondent pas"
     }
-    
+
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
 
   const validateStep2 = () => {
     const newErrors: Record<string, string> = {}
-    
+
     if (!formData.farmName.trim()) {
       newErrors.farmName = "Le nom de l'exploitation est requis"
     }
-    
+
     if (!formData.farmLocation.latitude || !formData.farmLocation.longitude) {
       newErrors.location = "Veuillez sélectionner la localisation de votre exploitation"
     }
-    
+
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
 
-  const handleNextStep = () => {
-    if (validateStep1()) {
-      setStep(2)
-      setErrors({})
+  const handleNextStep = async () => {
+    // Validation locale d'abord
+    if (!validateStep1()) {
+      return;
     }
-  }
+
+    setIsSubmitting(true);
+
+    // Clear any previous errors
+    setErrors(prev => {
+      const newErrors = { ...prev };
+      delete newErrors.submit;
+      return newErrors;
+    });
+
+    // Préparer les données pour l'API
+    const apiData = {
+      nom: formData.nom,
+      prenom: formData.prenom,
+      email: formData.email,
+      motDePasse: formData.password,
+      telephone: formData.phone || "",
+      typeUtilisateur: "AGRICULTEUR",
+      sexe: "M",
+      localisation: "Localisation temporaire",
+      actif: true
+    };
+
+    try {
+      const response = await fetch('http://localhost:3010/v1/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(apiData),
+      });
+
+      const data = await response.json(); // Parse ONCE
+
+      if (!response.ok) {
+        console.log(data.message || `Erreur ${response.status}: Échec de l'inscription`)
+        // throw new Error(data.message || `Erreur ${response.status}: Échec de l'inscription`);
+      }
+
+      console.log("Inscription réussie:", data);
+
+      // Store the token and user ID
+      if (data.token) {
+        localStorage.setItem('authToken', data.token);
+        // Stocker les informations utilisateur
+        localStorage.setItem('userId', data.user.id.toString())
+        localStorage.setItem('userData', JSON.stringify({
+          nom: data.user.nom,
+          prenom: data.user.prenom,
+          email: data.user.email,
+          telephone: data.user.telephone,
+          typeUtilisateur: data.user.typeUtilisateur,
+          sexe: data.user.sexe,
+          localisation: data.user.localisation,
+          actif: data.user.actif
+        }))
+        
+        // Stocker les informations séparément pour un accès facile
+        localStorage.setItem('userNom', data.user.nom)
+        localStorage.setItem('userPrenom', data.user.prenom)
+        localStorage.setItem('userEmail', data.user.email)
+        localStorage.setItem('userType', data.user.typeUtilisateur)
+        localStorage.setItem('userEmail', formData.email);
+      }
+
+      // SEULEMENT ICI on change de page (après succès)
+      setStep(2);
+      setErrors({});
+
+    } catch (error) {
+      console.error('Erreur lors de l\'inscription:', error);
+      setErrors(prev => ({
+        ...prev,
+        submit: error instanceof Error ? error.message : 'Une erreur est survenue lors de l\'inscription'
+      }));
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const handlePreviousStep = () => {
     setStep(1)
     setErrors({})
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    
-    if (validateStep2()) {
-      console.log("Données d'inscription:", formData)
-      onComplete()
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (validateStep2() && !isSubmitting) {
+      setIsSubmitting(true);
+
+      try {
+        // Récupérer le token stocké
+        const token = localStorage.getItem('authToken');
+        const userId = localStorage.getItem('userId');
+
+        if (!token || !userId) {
+          throw new Error('Session invalide. Veuillez recommencer.');
+        }
+
+        // Préparer les données de l'exploitation
+        const farmData = {
+          nomExploitation: formData.farmName,
+          superficieHectares: formData.farmSize ? parseFloat(formData.farmSize) : 0,
+          latitude: formData.farmLocation.latitude,
+          longitude: formData.farmLocation.longitude,
+          localisation: formData.farmLocation.address ||
+            `Lat: ${formData.farmLocation.latitude.toFixed(4)}, Lng: ${formData.farmLocation.longitude.toFixed(4)}`
+        };
+
+        const farmResponse = await fetch('http://localhost:3010/v1/exploitations', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `${token}`
+          },
+          body: JSON.stringify({
+            // userId: parseInt(userId),
+            ...farmData
+          }),
+        });
+
+        const farmResult = await farmResponse.json(); // Parse ONCE
+
+        if (!farmResponse.ok) {
+          throw new Error(farmResult.message || 'Erreur création exploitation');
+        }
+
+        console.log("Exploitation créée avec succès");
+
+        // Call the onComplete callback
+        onComplete();
+
+      } catch (error) {
+        console.error('Erreur lors de la création de l\'exploitation:', error);
+        setErrors(prev => ({
+          ...prev,
+          submit: error instanceof Error ? error.message : 'Une erreur est survenue'
+        }));
+      } finally {
+        setIsSubmitting(false);
+      }
     }
-  }
+  };
 
   const handleChange = (field: keyof typeof formData, value: any) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value
-    }))
-    
+    setFormData(prev => ({ ...prev, [field]: value }));
+
+    // Clear field-specific error
     if (errors[field as string]) {
       setErrors(prev => {
-        const newErrors = { ...prev }
-        delete newErrors[field as string]
-        return newErrors
-      })
+        const newErrors = { ...prev };
+        delete newErrors[field as string];
+        return newErrors;
+      });
+    }
+
+    // Clear submit error when user makes any change
+    if (errors.submit) {
+      setErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors.submit;
+        return newErrors;
+      });
     }
   }
 
@@ -138,36 +274,36 @@ export default function SignupScreen({ onComplete, onSwitchToLogin }: SignupScre
   useEffect(() => {
     if (showMap && mapContainerRef.current && !mapRef.current) {
       mapRef.current = L.map(mapContainerRef.current).setView(mapPosition, 10)
-      
+
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
       }).addTo(mapRef.current)
-      
+
       // Ajouter un marqueur initial
       markerRef.current = L.marker(mapPosition, {
         draggable: true
       }).addTo(mapRef.current)
-      
+
       // Mettre à jour la position quand le marqueur est déplacé
-      markerRef.current.on("dragend", function(event) {
+      markerRef.current.on("dragend", function (event) {
         const marker = event.target
         const position = marker.getLatLng()
         setMapPosition([position.lat, position.lng])
         handleLocationChange(position.lat, position.lng)
       })
-      
+
       // Gestion du clic sur la carte
-      mapRef.current.on("click", function(event) {
+      mapRef.current.on("click", function (event) {
         const { lat, lng } = event.latlng
         setMapPosition([lat, lng])
         handleLocationChange(lat, lng)
-        
+
         if (markerRef.current) {
           markerRef.current.setLatLng([lat, lng])
         }
       })
     }
-    
+
     return () => {
       if (mapRef.current) {
         mapRef.current.remove()
@@ -185,7 +321,7 @@ export default function SignupScreen({ onComplete, onSwitchToLogin }: SignupScre
           const { latitude, longitude } = position.coords
           setMapPosition([latitude, longitude])
           handleLocationChange(latitude, longitude)
-          
+
           if (mapRef.current) {
             mapRef.current.setView([latitude, longitude], 15)
           }
@@ -208,37 +344,43 @@ export default function SignupScreen({ onComplete, onSwitchToLogin }: SignupScre
       <div className="mb-8 text-center">
         <div className="mb-4 rounded-3 flex justify-center">
           <img
-            src="/logo_wi.png" 
+            src="/logo_wi.png"
             alt="WI GROW Logo"
-            width={80} 
-            height={80} 
+            width={80}
+            height={80}
             className="object-contain rounded-2xl"
           />
         </div>
         <h1 className="text-3xl font-bold text-primary mb-2">WI GROW</h1>
         <p className="text-muted-foreground italic">Créez votre compte agricole</p>
       </div>
+      {/* Ajouter ceci juste après le bouton Suivant dans l'étape 1 */}
+      {errors.submit && (
+        <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+          <p className="text-red-600 text-sm">{errors.submit}</p>
+        </div>
+      )}
 
+      <div className="flex gap-3 mt-8">
+        {/* Buttons */}
+      </div>
       <div className="w-full max-w-md mb-8">
         <div className="flex items-center justify-between mb-2">
           <div className={`flex items-center ${step >= 1 ? "text-primary" : "text-gray-400"}`}>
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center mr-2 ${
-              step >= 1 ? "bg-primary text-white" : "bg-gray-200 text-gray-500"
-            }`}>
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center mr-2 ${step >= 1 ? "bg-primary text-white" : "bg-gray-200 text-gray-500"
+              }`}>
               1
             </div>
             <span className="font-medium">Compte</span>
           </div>
           <div className="flex-1 h-1 mx-4 bg-gray-200">
-            <div className={`h-full transition-all duration-300 ${
-              step >= 2 ? "bg-primary" : "bg-gray-200"
-            }`}></div>
+            <div className={`h-full transition-all duration-300 ${step >= 2 ? "bg-primary" : "bg-gray-200"
+              }`}></div>
           </div>
           <div className={`flex items-center ${step >= 2 ? "text-primary" : "text-gray-400"}`}>
             <span className="font-medium mr-2">Exploitation</span>
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-              step >= 2 ? "bg-primary text-white" : "bg-gray-200 text-gray-500"
-            }`}>
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step >= 2 ? "bg-primary text-white" : "bg-gray-200 text-gray-500"
+              }`}>
               2
             </div>
           </div>
@@ -250,7 +392,7 @@ export default function SignupScreen({ onComplete, onSwitchToLogin }: SignupScre
           {step === 1 ? (
             <div className="space-y-4">
               <h2 className="text-2xl font-bold text-gray-800 mb-6">Informations personnelles</h2>
-              
+
               {/* Nom */}
               <div>
                 <div className="relative">
@@ -262,11 +404,10 @@ export default function SignupScreen({ onComplete, onSwitchToLogin }: SignupScre
                     placeholder="Nom *"
                     value={formData.nom}
                     onChange={(e) => handleChange("nom", e.target.value)}
-                    className={`w-full pl-12 pr-6 py-3 border-2 rounded-full focus:outline-none transition-smooth ${
-                      errors.nom 
-                        ? "border-red-500 focus:border-red-500" 
-                        : "border-border focus:border-primary"
-                    } bg-white text-foreground placeholder:text-muted-foreground`}
+                    className={`w-full pl-12 pr-6 py-3 border-2 rounded-full focus:outline-none transition-smooth ${errors.nom
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-border focus:border-primary"
+                      } bg-white text-foreground placeholder:text-muted-foreground`}
                   />
                 </div>
                 {errors.nom && (
@@ -285,11 +426,10 @@ export default function SignupScreen({ onComplete, onSwitchToLogin }: SignupScre
                     placeholder="Prénom *"
                     value={formData.prenom}
                     onChange={(e) => handleChange("prenom", e.target.value)}
-                    className={`w-full pl-12 pr-6 py-3 border-2 rounded-full focus:outline-none transition-smooth ${
-                      errors.prenom 
-                        ? "border-red-500 focus:border-red-500" 
-                        : "border-border focus:border-primary"
-                    } bg-white text-foreground placeholder:text-muted-foreground`}
+                    className={`w-full pl-12 pr-6 py-3 border-2 rounded-full focus:outline-none transition-smooth ${errors.prenom
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-border focus:border-primary"
+                      } bg-white text-foreground placeholder:text-muted-foreground`}
                   />
                 </div>
                 {errors.prenom && (
@@ -308,11 +448,10 @@ export default function SignupScreen({ onComplete, onSwitchToLogin }: SignupScre
                     placeholder="Email *"
                     value={formData.email}
                     onChange={(e) => handleChange("email", e.target.value)}
-                    className={`w-full pl-12 pr-6 py-3 border-2 rounded-full focus:outline-none transition-smooth ${
-                      errors.email 
-                        ? "border-red-500 focus:border-red-500" 
-                        : "border-border focus:border-primary"
-                    } bg-white text-foreground placeholder:text-muted-foreground`}
+                    className={`w-full pl-12 pr-6 py-3 border-2 rounded-full focus:outline-none transition-smooth ${errors.email
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-border focus:border-primary"
+                      } bg-white text-foreground placeholder:text-muted-foreground`}
                   />
                 </div>
                 {errors.email && (
@@ -347,11 +486,10 @@ export default function SignupScreen({ onComplete, onSwitchToLogin }: SignupScre
                     placeholder="Mot de passe *"
                     value={formData.password}
                     onChange={(e) => handleChange("password", e.target.value)}
-                    className={`w-full pl-12 pr-6 py-3 border-2 rounded-full focus:outline-none transition-smooth ${
-                      errors.password 
-                        ? "border-red-500 focus:border-red-500" 
-                        : "border-border focus:border-primary"
-                    } bg-white text-foreground placeholder:text-muted-foreground`}
+                    className={`w-full pl-12 pr-6 py-3 border-2 rounded-full focus:outline-none transition-smooth ${errors.password
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-border focus:border-primary"
+                      } bg-white text-foreground placeholder:text-muted-foreground`}
                   />
                 </div>
                 {errors.password && (
@@ -370,11 +508,10 @@ export default function SignupScreen({ onComplete, onSwitchToLogin }: SignupScre
                     placeholder="Confirmer le mot de passe *"
                     value={formData.confirmPassword}
                     onChange={(e) => handleChange("confirmPassword", e.target.value)}
-                    className={`w-full pl-12 pr-6 py-3 border-2 rounded-full focus:outline-none transition-smooth ${
-                      errors.confirmPassword 
-                        ? "border-red-500 focus:border-red-500" 
-                        : "border-border focus:border-primary"
-                    } bg-white text-foreground placeholder:text-muted-foreground`}
+                    className={`w-full pl-12 pr-6 py-3 border-2 rounded-full focus:outline-none transition-smooth ${errors.confirmPassword
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-border focus:border-primary"
+                      } bg-white text-foreground placeholder:text-muted-foreground`}
                   />
                 </div>
                 {errors.confirmPassword && (
@@ -385,16 +522,26 @@ export default function SignupScreen({ onComplete, onSwitchToLogin }: SignupScre
               <Button
                 type="button"
                 onClick={handleNextStep}
-                className="w-full bg-primary hover:bg-primary/90 text-white font-semibold py-3 rounded-full mt-6 flex items-center justify-center gap-2"
+                disabled={isSubmitting}
+                className="w-full bg-primary hover:bg-primary/90 text-white font-semibold py-3 rounded-full mt-6 flex items-center justify-center gap-2 disabled:opacity-70"
               >
-                Suivant
-                <ArrowRight className="w-5 h-5" />
+                {isSubmitting ? (
+                  <>
+                    <span className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></span>
+                    Traitement en cours...
+                  </>
+                ) : (
+                  <>
+                    Suivant
+                    <ArrowRight className="w-5 h-5" />
+                  </>
+                )}
               </Button>
             </div>
           ) : (
             <div className="space-y-4">
               <h2 className="text-2xl font-bold text-gray-800 mb-6">Votre exploitation</h2>
-              
+
               {/* Farm Name */}
               <div>
                 <div className="relative">
@@ -406,11 +553,10 @@ export default function SignupScreen({ onComplete, onSwitchToLogin }: SignupScre
                     placeholder="Nom de l'exploitation *"
                     value={formData.farmName}
                     onChange={(e) => handleChange("farmName", e.target.value)}
-                    className={`w-full pl-12 pr-6 py-3 border-2 rounded-full focus:outline-none transition-smooth ${
-                      errors.farmName 
-                        ? "border-red-500 focus:border-red-500" 
-                        : "border-border focus:border-primary"
-                    } bg-white text-foreground placeholder:text-muted-foreground`}
+                    className={`w-full pl-12 pr-6 py-3 border-2 rounded-full focus:outline-none transition-smooth ${errors.farmName
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-border focus:border-primary"
+                      } bg-white text-foreground placeholder:text-muted-foreground`}
                   />
                 </div>
                 {errors.farmName && (
@@ -435,11 +581,11 @@ export default function SignupScreen({ onComplete, onSwitchToLogin }: SignupScre
                   <Globe className="w-5 h-5 text-gray-400" />
                   <span className="font-medium">Localisation de l'exploitation *</span>
                 </div>
-                
+
                 {errors.location && (
                   <p className="text-red-500 text-sm ml-1">{errors.location}</p>
                 )}
-                
+
                 {/* Coordonnées affichées */}
                 {(formData.farmLocation.latitude && formData.farmLocation.longitude) ? (
                   <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
@@ -452,7 +598,7 @@ export default function SignupScreen({ onComplete, onSwitchToLogin }: SignupScre
                 ) : (
                   <p className="text-sm text-gray-500">Aucune position sélectionnée</p>
                 )}
-                
+
                 {/* Bouton pour ouvrir la carte */}
                 <Button
                   type="button"
@@ -463,7 +609,7 @@ export default function SignupScreen({ onComplete, onSwitchToLogin }: SignupScre
                   <Map className="w-4 h-4" />
                   {showMap ? "Masquer la carte" : "Sélectionner sur la carte"}
                 </Button>
-                
+
                 {/* Bouton géolocalisation */}
                 <Button
                   type="button"
@@ -474,11 +620,11 @@ export default function SignupScreen({ onComplete, onSwitchToLogin }: SignupScre
                   <MapPin className="w-4 h-4" />
                   Utiliser ma position actuelle
                 </Button>
-                
+
                 {/* Carte OpenStreetMap */}
                 {showMap && (
                   <div className="border-2 border-border rounded-lg overflow-hidden">
-                    <div 
+                    <div
                       ref={mapContainerRef}
                       className="w-full h-64"
                     />
@@ -502,10 +648,20 @@ export default function SignupScreen({ onComplete, onSwitchToLogin }: SignupScre
                 </Button>
                 <Button
                   type="submit"
-                  className="flex-1 bg-primary hover:bg-primary/90 text-white font-semibold py-3 rounded-full flex items-center justify-center gap-2"
+                  disabled={isSubmitting}
+                  className="flex-1 bg-primary hover:bg-primary/90 text-white font-semibold py-3 rounded-full flex items-center justify-center gap-2 disabled:opacity-70"
                 >
-                  Créer mon compte
-                  <ArrowRight className="w-5 h-5" />
+                  {isSubmitting ? (
+                    <>
+                      <span className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></span>
+                      Création de l'exploitation...
+                    </>
+                  ) : (
+                    <>
+                      Finaliser l'inscription
+                      <ArrowRight className="w-5 h-5" />
+                    </>
+                  )}
                 </Button>
               </div>
             </div>
@@ -515,8 +671,8 @@ export default function SignupScreen({ onComplete, onSwitchToLogin }: SignupScre
         <div className="mt-8 text-center">
           <p className="text-muted-foreground">
             Déjà un compte ?{" "}
-            <button 
-              onClick={onSwitchToLogin} 
+            <button
+              onClick={onSwitchToLogin}
               className="text-primary font-semibold hover:underline"
             >
               Se connecter
