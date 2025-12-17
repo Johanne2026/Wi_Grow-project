@@ -149,7 +149,7 @@ export default function SignupScreen({ onComplete, onSwitchToLogin }: SignupScre
           localisation: data.user.localisation,
           actif: data.user.actif
         }))
-        
+
         // Stocker les informations séparément pour un accès facile
         localStorage.setItem('userNom', data.user.nom)
         localStorage.setItem('userPrenom', data.user.prenom)

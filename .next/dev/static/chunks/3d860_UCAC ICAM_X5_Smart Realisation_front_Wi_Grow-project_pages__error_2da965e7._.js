@@ -1,4 +1,6 @@
-__turbopack_load_page_chunks__("/_error", [
+(globalThis.TURBOPACK_CHUNK_LISTS || (globalThis.TURBOPACK_CHUNK_LISTS = [])).push({
+    script: typeof document === "object" ? document.currentScript : undefined,
+    chunks: [
   "static/chunks/f5202_next_dist_compiled_9c00a09d._.js",
   "static/chunks/f5202_next_dist_shared_lib_8319597f._.js",
   "static/chunks/f5202_next_dist_client_31e46961._.js",
@@ -7,7 +9,7 @@ __turbopack_load_page_chunks__("/_error", [
   "static/chunks/[next]_entry_page-loader_ts_4185fac2._.js",
   "static/chunks/f5202_react-dom_3606d020._.js",
   "static/chunks/f5202_4f2c2bf2._.js",
-  "static/chunks/[root-of-the-server]__bf0bf5f0._.js",
-  "static/chunks/3d860_UCAC ICAM_X5_Smart Realisation_front_Wi_Grow-project_pages__error_2da965e7._.js",
-  "static/chunks/88e7d_UCAC ICAM_X5_Smart Realisation_front_Wi_Grow-project_pages__error_92b8e1d0._.js"
-])
+  "static/chunks/[root-of-the-server]__bf0bf5f0._.js"
+],
+    source: "entry"
+});

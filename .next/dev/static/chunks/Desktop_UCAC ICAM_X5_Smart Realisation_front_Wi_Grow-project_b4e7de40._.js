@@ -3432,31 +3432,15 @@ function FieldsScreen() {
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$UCAC__ICAM$2f$X5$2f$Smart__Realisation$2f$front$2f$Wi_Grow$2d$project$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "flex items-center justify-between",
-                children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$UCAC__ICAM$2f$X5$2f$Smart__Realisation$2f$front$2f$Wi_Grow$2d$project$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
-                        className: "text-2xl font-bold",
-                        children: "Mes Parcelles"
-                    }, void 0, false, {
-                        fileName: "[project]/Desktop/UCAC ICAM/X5/Smart Realisation/front/Wi_Grow-project/components/dashboard/fields.tsx",
-                        lineNumber: 29,
-                        columnNumber: 9
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$UCAC__ICAM$2f$X5$2f$Smart__Realisation$2f$front$2f$Wi_Grow$2d$project$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                        className: "p-2 hover:bg-muted rounded-lg transition-smooth",
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$UCAC__ICAM$2f$X5$2f$Smart__Realisation$2f$front$2f$Wi_Grow$2d$project$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$UCAC__ICAM$2f$X5$2f$Smart__Realisation$2f$front$2f$Wi_Grow$2d$project$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$plus$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Plus$3e$__["Plus"], {
-                            className: "w-6 h-6"
-                        }, void 0, false, {
-                            fileName: "[project]/Desktop/UCAC ICAM/X5/Smart Realisation/front/Wi_Grow-project/components/dashboard/fields.tsx",
-                            lineNumber: 31,
-                            columnNumber: 11
-                        }, this)
-                    }, void 0, false, {
-                        fileName: "[project]/Desktop/UCAC ICAM/X5/Smart Realisation/front/Wi_Grow-project/components/dashboard/fields.tsx",
-                        lineNumber: 30,
-                        columnNumber: 9
-                    }, this)
-                ]
-            }, void 0, true, {
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$UCAC__ICAM$2f$X5$2f$Smart__Realisation$2f$front$2f$Wi_Grow$2d$project$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
+                    className: "text-2xl font-bold",
+                    children: "Mes Parcelles"
+                }, void 0, false, {
+                    fileName: "[project]/Desktop/UCAC ICAM/X5/Smart Realisation/front/Wi_Grow-project/components/dashboard/fields.tsx",
+                    lineNumber: 29,
+                    columnNumber: 9
+                }, this)
+            }, void 0, false, {
                 fileName: "[project]/Desktop/UCAC ICAM/X5/Smart Realisation/front/Wi_Grow-project/components/dashboard/fields.tsx",
                 lineNumber: 28,
                 columnNumber: 7
@@ -3475,12 +3459,12 @@ function FieldsScreen() {
                                             className: "w-6 h-6 text-primary"
                                         }, void 0, false, {
                                             fileName: "[project]/Desktop/UCAC ICAM/X5/Smart Realisation/front/Wi_Grow-project/components/dashboard/fields.tsx",
-                                            lineNumber: 44,
+                                            lineNumber: 41,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/Desktop/UCAC ICAM/X5/Smart Realisation/front/Wi_Grow-project/components/dashboard/fields.tsx",
-                                        lineNumber: 43,
+                                        lineNumber: 40,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$UCAC__ICAM$2f$X5$2f$Smart__Realisation$2f$front$2f$Wi_Grow$2d$project$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3491,7 +3475,7 @@ function FieldsScreen() {
                                                 children: field.name
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/UCAC ICAM/X5/Smart Realisation/front/Wi_Grow-project/components/dashboard/fields.tsx",
-                                                lineNumber: 47,
+                                                lineNumber: 44,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$UCAC__ICAM$2f$X5$2f$Smart__Realisation$2f$front$2f$Wi_Grow$2d$project$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3499,7 +3483,7 @@ function FieldsScreen() {
                                                 children: field.crops
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/UCAC ICAM/X5/Smart Realisation/front/Wi_Grow-project/components/dashboard/fields.tsx",
-                                                lineNumber: 48,
+                                                lineNumber: 45,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$UCAC__ICAM$2f$X5$2f$Smart__Realisation$2f$front$2f$Wi_Grow$2d$project$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3507,19 +3491,19 @@ function FieldsScreen() {
                                                 children: field.area
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/UCAC ICAM/X5/Smart Realisation/front/Wi_Grow-project/components/dashboard/fields.tsx",
-                                                lineNumber: 49,
+                                                lineNumber: 46,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/Desktop/UCAC ICAM/X5/Smart Realisation/front/Wi_Grow-project/components/dashboard/fields.tsx",
-                                        lineNumber: 46,
+                                        lineNumber: 43,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/Desktop/UCAC ICAM/X5/Smart Realisation/front/Wi_Grow-project/components/dashboard/fields.tsx",
-                                lineNumber: 42,
+                                lineNumber: 39,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$UCAC__ICAM$2f$X5$2f$Smart__Realisation$2f$front$2f$Wi_Grow$2d$project$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3535,7 +3519,7 @@ function FieldsScreen() {
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/Desktop/UCAC ICAM/X5/Smart Realisation/front/Wi_Grow-project/components/dashboard/fields.tsx",
-                                                lineNumber: 54,
+                                                lineNumber: 51,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$UCAC__ICAM$2f$X5$2f$Smart__Realisation$2f$front$2f$Wi_Grow$2d$project$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3543,37 +3527,37 @@ function FieldsScreen() {
                                                 children: field.status
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/UCAC ICAM/X5/Smart Realisation/front/Wi_Grow-project/components/dashboard/fields.tsx",
-                                                lineNumber: 55,
+                                                lineNumber: 52,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/Desktop/UCAC ICAM/X5/Smart Realisation/front/Wi_Grow-project/components/dashboard/fields.tsx",
-                                        lineNumber: 53,
+                                        lineNumber: 50,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$UCAC__ICAM$2f$X5$2f$Smart__Realisation$2f$front$2f$Wi_Grow$2d$project$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$UCAC__ICAM$2f$X5$2f$Smart__Realisation$2f$front$2f$Wi_Grow$2d$project$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$right$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronRight$3e$__["ChevronRight"], {
                                         className: "w-5 h-5 text-muted-foreground"
                                     }, void 0, false, {
                                         fileName: "[project]/Desktop/UCAC ICAM/X5/Smart Realisation/front/Wi_Grow-project/components/dashboard/fields.tsx",
-                                        lineNumber: 57,
+                                        lineNumber: 54,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/Desktop/UCAC ICAM/X5/Smart Realisation/front/Wi_Grow-project/components/dashboard/fields.tsx",
-                                lineNumber: 52,
+                                lineNumber: 49,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, field.id, true, {
                         fileName: "[project]/Desktop/UCAC ICAM/X5/Smart Realisation/front/Wi_Grow-project/components/dashboard/fields.tsx",
-                        lineNumber: 38,
+                        lineNumber: 35,
                         columnNumber: 11
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/Desktop/UCAC ICAM/X5/Smart Realisation/front/Wi_Grow-project/components/dashboard/fields.tsx",
-                lineNumber: 36,
+                lineNumber: 33,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$UCAC__ICAM$2f$X5$2f$Smart__Realisation$2f$front$2f$Wi_Grow$2d$project$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -3583,14 +3567,14 @@ function FieldsScreen() {
                         className: "w-5 h-5"
                     }, void 0, false, {
                         fileName: "[project]/Desktop/UCAC ICAM/X5/Smart Realisation/front/Wi_Grow-project/components/dashboard/fields.tsx",
-                        lineNumber: 65,
+                        lineNumber: 62,
                         columnNumber: 9
                     }, this),
                     "Ajouter une parcelle"
                 ]
             }, void 0, true, {
                 fileName: "[project]/Desktop/UCAC ICAM/X5/Smart Realisation/front/Wi_Grow-project/components/dashboard/fields.tsx",
-                lineNumber: 64,
+                lineNumber: 61,
                 columnNumber: 7
             }, this)
         ]

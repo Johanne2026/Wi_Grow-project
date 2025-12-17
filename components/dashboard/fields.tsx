@@ -27,9 +27,6 @@ export default function FieldsScreen() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Mes Parcelles</h1>
-        <button className="p-2 hover:bg-muted rounded-lg transition-smooth">
-          <Plus className="w-6 h-6" />
-        </button>
       </div>
 
       {/* Fields List */}
